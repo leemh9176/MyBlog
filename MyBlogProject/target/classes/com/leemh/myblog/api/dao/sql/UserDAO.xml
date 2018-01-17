@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.leemh.myblog.api.dao.UserDAO">
+	<resultMap type="UserVO" id="UserVOResult">
+		<result property="id" column="ID"/>
+		<result property="password" column="PASSWORD"/>
+		<result property="name" column="NAME"/>
+		<result property="sex" column="SEX"/>
+		<result property="email" column="EMAIL"/>
+		<result property="phone_number" column="PHONE_NUM"/>
+		<result property="birth" column="BIRTH"/>
+	</resultMap>
+	
+	<sql id="userColumns">
+		ID,
+		PASSWORD,
+		NAME,
+		SEX,
+		EMAIL,
+		PHONE_NUM,
+		BIRTH
+	</sql>
+	
+	<insert id="insertUser" parameterType="com.leemh.myblog.api.vo.UserVO">
+		INSERT INTO users
+			<include refid="cuserColumns"/>
+		VALUES (
+			#{id:VARCHAR},
+			#{password:VARCHAR},
+			#{name:VARCHAR},
+			#{sex:VARCHAR},
+			#{email:VARCHAR},
+			#{phone_number:VARCHAR},
+			#{birth:VARCHAR}
+		)
+	</insert>
+	
+	<update id="updateUser" parameterType="com.leemh.myblog.api.vo.UserVO">
+		UPDATE users SET
+			1 = 1,
+			<if test="password 		!= null">PASSWORD = #{password:VARCHAR},</if>
+			<if test="name			!= null">NAME = #{name:VARCHAR},</if>
+			<if test="sex			!= null">SEX = #{sex:VARCHAR},</if>
+			<if test="email			!= null">EMAIL = #{email:VARCHAR},</if>
+			<if test="phone_number	!= null">PHONE_NUM = #{phone_number:VARCHAR},</if>
+			<if test="birth			!= null">BIRTH = #{birth:VARCHAR}</if>
+		WHERE
+			ID = #{id:VARCHAR}
+	</update>
+	
+	<delete id="deleteUser" parameterType="org.springframework.ui.ModelMap">
+		DELETE 
+		FROM users
+		WHERE
+			ID = #{id:VARCHAR}
+	</delete>
+	
+	<select id="readUser" resultType="UserVOResult" parameterType="org.springframework.ui.ModelMap">
+		SELECT
+			<include refid="userColumns"/>
+		FROM
+			users
+		WHERE
+			ID = #{id:VARCHAR}			
+	</select>
+</mapper>
